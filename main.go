@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"time"
 )
 
 type Logger interface {
@@ -66,6 +67,7 @@ var (
 )
 
 type Log struct {
+	Time   time.Time
 	Level  Level
 	Format string
 	Args   []interface{}
@@ -119,7 +121,7 @@ func log(level Level, fields map[string]interface{}, format string, args ...inte
 
 		// Create message.
 		msg, err := currentFormatter.Format(
-			&Log{Level: level, Format: format, Args: args, Fields: fields},
+			&Log{Level: level, Format: format, Args: args, Fields: fields, Time: time.Now().UTC()},
 		)
 		if err != nil {
 			panic(fmt.Errorf("the logger cannot create the message :: %v", err))

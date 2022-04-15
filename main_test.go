@@ -26,6 +26,7 @@ func mockOutputs(out io.Writer) func() {
 	ErrorOut = out
 	FatalOut = out
 	PanicOut = out
+	SetLevel(TraceLevel)
 	return func() {
 		TraceOut = os.Stdout
 		DebugOut = os.Stdout
@@ -34,6 +35,7 @@ func mockOutputs(out io.Writer) func() {
 		ErrorOut = os.Stdout
 		FatalOut = os.Stdout
 		PanicOut = os.Stdout
+		SetLevel(DebugLevel)
 	}
 }
 
