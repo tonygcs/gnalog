@@ -1,4 +1,4 @@
-package main
+package gnalog
 
 type logger struct {
 	fields map[string]interface{}
