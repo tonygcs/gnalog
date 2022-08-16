@@ -27,21 +27,18 @@ func (r *statusRecorder) WriteHeader(status int) {
 
 type Middleware struct {
 	handlerToWrap   http.Handler
-	withRequestID   bool
 	requestIDHeader string
 }
 
 func NewMiddleware(handlerToWrap http.Handler) *Middleware {
 	return &Middleware{
 		handlerToWrap: handlerToWrap,
-		withRequestID: false,
 	}
 }
 
 func NewMiddlewareWithRequestID(handlerToWrap http.Handler, requestIDHeader string) *Middleware {
 	return &Middleware{
 		handlerToWrap:   handlerToWrap,
-		withRequestID:   true,
 		requestIDHeader: requestIDHeader,
 	}
 }
@@ -49,7 +46,7 @@ func NewMiddlewareWithRequestID(handlerToWrap http.Handler, requestIDHeader stri
 func (m *Middleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	l := New()
 
-	if m.withRequestID {
+	if m.requestIDHeader != "" {
 		reqID := m.getRequestID(r)
 		l = l.With("request_id", reqID)
 		w.Header().Add(m.requestIDHeader, reqID)

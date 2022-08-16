@@ -4,7 +4,7 @@ Logging library for go applications.
 
 ## Install
 
-```go
+```sh
 go get github.com/tonygcs/gnalog
 ```
 

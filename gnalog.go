@@ -17,7 +17,7 @@ type Logger interface {
 	Panic(format string, args ...string)
 }
 
-type formatter interface {
+type Formatter interface {
 	Format(l *Log) ([]byte, error)
 }
 
@@ -63,7 +63,7 @@ var (
 	PanicOut io.Writer = os.Stdout
 
 	currentLevel     Level     = DebugLevel
-	currentFormatter formatter = &JSONFormatter{}
+	currentFormatter Formatter = &JSONFormatter{}
 )
 
 type Log struct {
@@ -83,7 +83,7 @@ func SetLevel(l Level) {
 	currentLevel = l
 }
 
-func SetFormatter(f formatter) {
+func SetFormatter(f Formatter) {
 	if f == nil {
 		panic("invalid nil formatter")
 	}
