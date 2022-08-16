@@ -9,12 +9,11 @@ import (
 	"github.com/google/uuid"
 )
 
-var loggerCtxKey = "GNALOG_CTX_LOGGER"
-var requestIDKey = "RequestID"
+type key int
 
-func SetCtxKey(key string) {
-	loggerCtxKey = key
-}
+const (
+	loggerCtxKey key = iota
+)
 
 type statusRecorder struct {
 	http.ResponseWriter
@@ -27,8 +26,9 @@ func (r *statusRecorder) WriteHeader(status int) {
 }
 
 type Middleware struct {
-	handlerToWrap http.Handler
-	withRequestID bool
+	handlerToWrap   http.Handler
+	withRequestID   bool
+	requestIDHeader string
 }
 
 func NewMiddleware(handlerToWrap http.Handler) *Middleware {
@@ -38,10 +38,11 @@ func NewMiddleware(handlerToWrap http.Handler) *Middleware {
 	}
 }
 
-func NewMiddlewareWithRequestID(handlerToWrap http.Handler) *Middleware {
+func NewMiddlewareWithRequestID(handlerToWrap http.Handler, requestIDHeader string) *Middleware {
 	return &Middleware{
-		handlerToWrap: handlerToWrap,
-		withRequestID: true,
+		handlerToWrap:   handlerToWrap,
+		withRequestID:   true,
+		requestIDHeader: requestIDHeader,
 	}
 }
 
@@ -49,8 +50,9 @@ func (m *Middleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	l := New()
 
 	if m.withRequestID {
-		id := uuid.New()
-		l = l.With(requestIDKey, id.String())
+		reqID := m.getRequestID(r)
+		l = l.With("request_id", reqID)
+		w.Header().Add(m.requestIDHeader, reqID)
 	}
 
 	recorder := &statusRecorder{
@@ -68,6 +70,14 @@ func (m *Middleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := context.WithValue(r.Context(), loggerCtxKey, l)
 	r = r.WithContext(ctx)
 	m.handlerToWrap.ServeHTTP(recorder, r)
+}
+
+func (m *Middleware) getRequestID(r *http.Request) string {
+	reqID := r.Header.Get(m.requestIDHeader)
+	if reqID == "" {
+		reqID = uuid.New().String()
+	}
+	return reqID
 }
 
 func GetLogger(r *http.Request) Logger {
