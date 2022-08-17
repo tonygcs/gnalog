@@ -8,13 +8,13 @@ import (
 )
 
 type Logger interface {
-	Trace(format string, args ...string)
-	Debug(format string, args ...string)
-	Info(format string, args ...string)
-	Warn(format string, args ...string)
-	Error(format string, args ...string)
-	Fatal(format string, args ...string)
-	Panic(format string, args ...string)
+	Trace(format string, args ...interface{})
+	Debug(format string, args ...interface{})
+	Info(format string, args ...interface{})
+	Warn(format string, args ...interface{})
+	Error(format string, args ...interface{})
+	Fatal(format string, args ...interface{})
+	Panic(format string, args ...interface{})
 }
 
 type Formatter interface {

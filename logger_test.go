@@ -59,3 +59,9 @@ func TestLoggerWithFields(t *testing.T) {
 		})
 	}
 }
+
+func TestLoggerImplementTheInterface(t *testing.T) {
+	var logger interface{} = New()
+	_, ok := logger.(Logger)
+	require.True(t, ok)
+}
