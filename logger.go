@@ -10,7 +10,7 @@ func New() *logger {
 	}
 }
 
-func (l *logger) With(fieldName string, arg interface{}) *logger {
+func (l *logger) With(fieldName string, arg interface{}) Logger {
 	newLogger := New()
 	newLogger.fields = make(map[string]interface{})
 	for key, value := range l.fields {

@@ -8,6 +8,7 @@ import (
 )
 
 type Logger interface {
+	With(fieldName string, arg interface{}) Logger
 	Trace(format string, args ...interface{})
 	Debug(format string, args ...interface{})
 	Info(format string, args ...interface{})
@@ -135,7 +136,7 @@ func log(level Level, fields map[string]interface{}, format string, args ...inte
 	}
 }
 
-func With(fieldName string, arg interface{}) *logger {
+func With(fieldName string, arg interface{}) Logger {
 	logger := New()
 	logger.fields[fieldName] = arg
 	return logger
