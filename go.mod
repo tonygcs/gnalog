@@ -2,10 +2,7 @@ module github.com/tonygcs/gnalog
 
 go 1.19
 
-require (
-	github.com/google/uuid v1.3.0
-	github.com/stretchr/testify v1.7.1
-)
+require github.com/stretchr/testify v1.7.1
 
 require (
 	github.com/davecgh/go-spew v1.1.0 // indirect
