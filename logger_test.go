@@ -17,7 +17,7 @@ func TestLoggerWithFields(t *testing.T) {
 
 	testCases := []struct {
 		name        string
-		logger      *logger
+		logger      Logger
 		contains    []string
 		notContains []string
 	}{

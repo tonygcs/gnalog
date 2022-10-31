@@ -39,6 +39,10 @@ func mockOutputs(out io.Writer) func() {
 	}
 }
 
+func TestLoggerImplementsTheInterface(t *testing.T) {
+	var _ Logger = New()
+}
+
 func TestLogger(t *testing.T) {
 	testCases := []struct {
 		name   string
