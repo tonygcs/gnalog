@@ -122,6 +122,7 @@ func TestLogger(t *testing.T) {
 			tc.logger(tc.format, tc.args...)
 
 			expected := fmt.Sprintf(tc.format, tc.args...)
+			expected = expected + "\n"
 			actual := out.String()
 			require.Equal(t, expected, actual)
 		})
@@ -172,7 +173,7 @@ func TestDifferentOutputsByLevel(t *testing.T) {
 	}
 
 	for _, l := range logs {
-		require.Equal(t, l.msg, l.output.String())
+		require.Equal(t, l.msg+"\n", l.output.String())
 	}
 }
 
