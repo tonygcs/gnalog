@@ -129,7 +129,8 @@ func log(level Level, fields map[string]interface{}, format string, args ...inte
 		}
 
 		// Write the message.
-		_, err = out.Write([]byte(msg))
+		msg = append(msg, '\n')
+		_, err = out.Write(msg)
 		if err != nil {
 			panic(fmt.Errorf("cannot write in %s logger :: %v", level, err))
 		}
